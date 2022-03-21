@@ -5,14 +5,11 @@ const BAD_REQUEST = 400;
 
 module.exports = {
   registrationUser(req, res) {
-    console.log(req);
-    Users.create({ username: req.body.username })
+    Users.create(req.body)
       .then((news) => {
-        res.header('Access-Control-Allow-Origin', '*');
         res.status(OK).send(news);
       })
       .catch((error) => {
-        res.header('Access-Control-Allow-Origin', '*');
         res.status(BAD_REQUEST).send(error);
       });
   },
