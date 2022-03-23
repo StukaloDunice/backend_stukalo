@@ -20,7 +20,12 @@ module.exports = {
           throw new Error('User exists');
         } else {
           const token = generateJWT(user.dataValues);
-          res.status(OK).send(token);
+          res.status(OK).send({
+            user: {
+              id: user.id, username: user.username, email: user.email,
+            },
+            token,
+          });
         }
       }).catch((error) => {
         res.status(BAD_REQUEST).send(error.message);
@@ -37,7 +42,12 @@ module.exports = {
             throw new Error('User is not found');
           } else {
             const token = generateJWT(user);
-            res.status(OK).send(token);
+            res.status(OK).send({
+              user: {
+                id: user.id, username: user.username, email: user.email,
+              },
+              token,
+            });
           }
         }
       })
