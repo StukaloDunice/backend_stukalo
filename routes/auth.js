@@ -6,5 +6,6 @@ const router = express.Router();
 /* GET users listing. */
 router.post('/register', authController.registrationUser);
 router.post('/login', authController.authenticationUser);
+router.get('/whoiam', authController.currentUser);
 
 module.exports = router;
