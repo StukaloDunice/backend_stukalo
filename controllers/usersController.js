@@ -4,7 +4,7 @@ const OK = 200;
 const BAD_REQUEST = 400;
 
 module.exports = {
-  getNews(req, res) {
+  authorizationUser(req, res) {
     News.findAll({ include: { model: Users, as: 'user' } })
       .then((news) => {
         res.status(OK).send(news);
