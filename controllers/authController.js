@@ -17,7 +17,7 @@ module.exports = {
     })
       .then(([user, created]) => {
         if (!created) {
-          throw new Error('User exists');
+          res.status(BAD_REQUEST).send({ message: 'User exists' });
         } else {
           const token = generateJWT(user.dataValues);
           res.status(OK).send(token);
@@ -34,7 +34,7 @@ module.exports = {
         if (user) {
           const validPassword = bcrypt.compareSync(req.body.password, user.password);
           if (!validPassword) {
-            throw new Error('User is not found');
+            res.status(BAD_REQUEST).send({ message: 'Invalid password' });
           } else {
             const token = generateJWT(user);
             res.status(OK).send(token);
