@@ -45,7 +45,7 @@ module.exports = {
         res.status(BAD_REQUEST).send(error.message);
       });
   },
-  currentUser(req, res) {
+  whoIAm(req, res) {
     try {
       const id = jwt.verify(req.headers.authorization, process.env.SECRET_KEY);
       Users.findOne({
