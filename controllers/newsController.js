@@ -5,8 +5,20 @@ const BAD_REQUEST = 400;
 
 module.exports = {
   getNews(req, res) {
-    News.findAll({ include: { model: Users, as: 'user' } })
+    News.findAll({
+      attributes: {
+        exclude: ['createdAt', 'updatedAt'],
+      },
+      include: [
+        {
+          model: Users,
+          as: 'user',
+          attributes: ['username', 'id', 'email', 'avatar'],
+        },
+      ],
+    })
       .then((news) => {
+        console.log(news);
         res.status(OK).send(news);
       })
       .catch((error) => {

@@ -5,7 +5,13 @@ const BAD_REQUEST = 400;
 
 module.exports = {
   currentUser(req, res) {
-    Users.findOne({ where: { id: req.params.id }, include: { model: News, as: 'news' } })
+    Users.findOne({
+      where: { id: req.params.id },
+      attributes: {
+        exclude: ['createdAt', 'updatedAt'],
+      },
+      include: { model: News, as: 'news' },
+    })
       .then((user) => {
         console.log(user);
         res.status(OK).send(user);
