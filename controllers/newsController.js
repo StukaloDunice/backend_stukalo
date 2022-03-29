@@ -18,7 +18,6 @@ module.exports = {
       ],
     })
       .then((news) => {
-        console.log(news);
         res.status(OK).send(news);
       })
       .catch((error) => {

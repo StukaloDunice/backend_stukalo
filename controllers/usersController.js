@@ -8,12 +8,17 @@ module.exports = {
     Users.findOne({
       where: { id: req.params.id },
       attributes: {
-        exclude: ['createdAt', 'updatedAt'],
+        exclude: ['createdAt', 'updatedAt', 'password'],
       },
-      include: { model: News, as: 'news' },
+      include: [
+        {
+          model: News,
+          as: 'news',
+          attributes: ['id', 'title', 'content', 'tags', 'image'],
+        },
+      ],
     })
       .then((user) => {
-        console.log(user);
         res.status(OK).send(user);
       })
       .catch((error) => {
