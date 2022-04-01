@@ -1,11 +1,12 @@
 const express = require('express');
-const usersController = require('../controllers/usersController');
+const { currentUser, editingUser } = require('../controllers/usersController');
 const uploadingPhotoMiddleware = require('../middleware/uploadingPhoto');
+const jwtVerification = require('../middleware/jwtVerification');
 
 const router = express.Router();
 
 /* GET users listing. */
-router.get('/:id', usersController.currentUser);
-router.patch('/:id', uploadingPhotoMiddleware.single('avatar'), usersController.editingUser);
+router.get('/:id', currentUser);
+router.patch('/:id', jwtVerification, uploadingPhotoMiddleware.single('avatar'), editingUser);
 
 module.exports = router;

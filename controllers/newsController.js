@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken');
 const { News, Users } = require('../models');
 
 const OK = 200;
@@ -26,14 +25,8 @@ module.exports = {
       });
   },
   addNews(req, res) {
-    try {
-      const id = jwt.verify(req.headers.authorization, process.env.SECRET_KEY);
-      console.log(req.body);
-      News.create({ ...req.body, userId: id.id, image: req.file.path })
-        .then((news) => res.status(OK).send(news))
-        .catch((error) => res.status(BAD_REQUEST).send(error));
-    } catch (error) {
-      res.status(BAD_REQUEST).send({ message: 'Log in again' });
-    }
+    News.create({ ...req.body, userId: req.id, image: req.file.path })
+      .then((news) => res.status(OK).send(news))
+      .catch((error) => res.status(BAD_REQUEST).send(error));
   },
 };

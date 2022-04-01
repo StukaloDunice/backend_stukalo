@@ -46,24 +46,19 @@ module.exports = {
       });
   },
   whoIAm(req, res) {
-    try {
-      const id = jwt.verify(req.headers.authorization, process.env.SECRET_KEY);
-      Users.findOne({
-        where: { id: id.id },
-      })
-        .then((user) => {
-          res.status(OK).send({
-            id: user.id,
-            username: user.username,
-            avatar: user.avatar,
-            email: user.email,
-          });
-        })
-        .catch((error) => {
-          res.status(BAD_REQUEST).send(error.message);
+    Users.findOne({
+      where: { id: req.id },
+    })
+      .then((user) => {
+        res.status(OK).send({
+          id: user.id,
+          username: user.username,
+          avatar: user.avatar,
+          email: user.email,
         });
-    } catch (error) {
-      res.status(BAD_REQUEST).send({ message: 'Log in again' });
-    }
+      })
+      .catch((error) => {
+        res.status(BAD_REQUEST).send(error.message);
+      });
   },
 };

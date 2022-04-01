@@ -29,14 +29,12 @@ module.exports = {
     Users.update({
       username: req.body.username,
       avatar: req.file.path,
-    }, { where: { id: req.body.id } })
-      .then(() => Users.findOne({
-        where: { id: req.body.id },
-        attributes: {
-          exclude: ['createAt', 'updateAt', 'password'],
-        },
-      }))
-      .then((user) => res.status(OK).send(user))
+    }, {
+      where: { id: req.body.id },
+      returning: ['id', 'username', 'avatar', 'email'],
+      plain: true,
+    })
+      .then((user) => res.status(OK).send(user[1]))
       .catch((error) => res.status(BAD_REQUEST).send(error));
   },
 };
