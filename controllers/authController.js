@@ -45,4 +45,20 @@ module.exports = {
         res.status(BAD_REQUEST).send(error.message);
       });
   },
+  whoIAm(req, res) {
+    Users.findOne({
+      where: { id: req.id },
+    })
+      .then((user) => {
+        res.status(OK).send({
+          id: user.id,
+          username: user.username,
+          avatar: user.avatar,
+          email: user.email,
+        });
+      })
+      .catch((error) => {
+        res.status(BAD_REQUEST).send(error.message);
+      });
+  },
 };

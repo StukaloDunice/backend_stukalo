@@ -1,10 +1,12 @@
 const express = require('express');
-const authController = require('../controllers/authController');
+const { registrationUser, authenticationUser, whoIAm } = require('../controllers/authController');
+const jwtVerification = require('../middleware/jwtVerification');
 
 const router = express.Router();
 
 /* GET users listing. */
-router.post('/register', authController.registrationUser);
-router.post('/login', authController.authenticationUser);
+router.post('/register', registrationUser);
+router.post('/login', authenticationUser);
+router.get('/whoiam', jwtVerification, whoIAm);
 
 module.exports = router;
