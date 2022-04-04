@@ -4,6 +4,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
+const passport = require('passport');
+require('./passport');
 
 const usersRouter = require('./routes/users');
 const newsRouter = require('./routes/news');
@@ -24,6 +26,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname)));
 
+app.use(passport.initialize());
 app.use(cors());
 app.use('/users', usersRouter);
 app.use('/news', newsRouter);
