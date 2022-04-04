@@ -7,13 +7,17 @@ const OK = 200;
 const BAD_REQUEST = 400;
 
 const salt = bcrypt.genSaltSync(10);
-const generateJWT = (user) => jwt.sign({ id: user.id }, process.env.SECRET_KEY, { expiresIn: '24h' });
+const generateJWT = (user) =>
+  jwt.sign({ id: user.id }, process.env.SECRET_KEY, { expiresIn: '24h' });
 
 module.exports = {
   registrationUser(req, res) {
     Users.findOrCreate({
       where: { email: req.body.email },
-      defaults: { username: req.body.username, password: bcrypt.hashSync(req.body.password, salt) },
+      defaults: {
+        username: req.body.username,
+        password: bcrypt.hashSync(req.body.password, salt),
+      },
     })
       .then(([user, created]) => {
         if (!created) {
@@ -22,7 +26,8 @@ module.exports = {
           const token = generateJWT(user.dataValues);
           res.status(OK).send(token);
         }
-      }).catch((error) => {
+      })
+      .catch((error) => {
         res.status(BAD_REQUEST).send(error.message);
       });
   },
@@ -32,7 +37,10 @@ module.exports = {
     })
       .then((user) => {
         if (user) {
-          const validPassword = bcrypt.compareSync(req.body.password, user.password);
+          const validPassword = bcrypt.compareSync(
+            req.body.password,
+            user.password
+          );
           if (!validPassword) {
             res.status(BAD_REQUEST).send({ message: 'Invalid password' });
           } else {
@@ -60,5 +68,43 @@ module.exports = {
       .catch((error) => {
         res.status(BAD_REQUEST).send(error.message);
       });
+  },
+  googleAuthorization(accessToken, refreshToken, profile, done) {
+    Users.findOne({
+      where: { email: profile.emails[0].value },
+    }).then((user) => {
+      if (!user) {
+        Users.create({
+          email: profile.emails[0].value,
+          avatar: profile.photos[0].value,
+          username: profile.displayName,
+        })
+          .then((userDb) => {
+            const token = generateJWT(userDb);
+            console.log('TOKEN =             ', token);
+            done(null, token);
+          })
+          .catch((err) => done(err, null));
+      } else {
+        Users.update(
+          {
+            avatar: profile.photos[0].value,
+            username: profile.displayName,
+          },
+          {
+            where: { email: profile.emails[0].value },
+            returning: ['id'],
+            plain: true,
+          }
+        )
+          .then((userDb) => {
+            console.log(userDb);
+            const token = generateJWT(userDb[1]);
+            console.log('TOKEN =             ', token);
+            done(null, token);
+          })
+          .catch((err) => done(err, null));
+      }
+    });
   },
 };
