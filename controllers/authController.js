@@ -70,12 +70,13 @@ module.exports = {
   },
   googleAuthorization(accessToken, refreshToken, profile, done) {
     const { emails, photos, displayName } = profile;
+    const email = emails[0].value;
     Users.findOne({
-      where: { email: profile.emails[0].value },
+      where: { email },
     }).then((user) => {
       if (!user) {
         Users.create({
-          email: emails[0].value,
+          email,
           avatar: photos[0].value,
           username: displayName,
         })
