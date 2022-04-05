@@ -69,14 +69,15 @@ module.exports = {
       });
   },
   googleAuthorization(accessToken, refreshToken, profile, done) {
+    const { emails, photos, displayName } = profile;
     Users.findOne({
       where: { email: profile.emails[0].value },
     }).then((user) => {
       if (!user) {
         Users.create({
-          email: profile.emails[0].value,
-          avatar: profile.photos[0].value,
-          username: profile.displayName,
+          email: emails[0].value,
+          avatar: photos[0].value,
+          username: displayName,
         })
           .then((userDb) => {
             const token = generateJWT(userDb);
