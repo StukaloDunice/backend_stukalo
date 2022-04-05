@@ -9,8 +9,6 @@ const jwtVerification = require('../middleware/jwtVerification');
 
 const router = express.Router();
 
-const BAD_REQUEST = 400;
-
 /* GET users listing. */
 router.post('/register', registrationUser);
 router.post('/login', authenticationUser);
@@ -21,7 +19,7 @@ router.get(
   passport.authenticate('google', {
     scope: ['profile', 'email'],
     session: false,
-  })
+  }),
 );
 router.get(
   '/google/callback',
@@ -30,8 +28,8 @@ router.get(
     session: false,
   }),
   (req, res) => {
-    res.redirect(`${process.env.URL_CLIENT}accessToken/${req.user}`);
-  }
+    res.redirect(`${process.env.URL_CLIENT}${req.user}`);
+  },
 );
 
 module.exports = router;

@@ -7,8 +7,7 @@ const OK = 200;
 const BAD_REQUEST = 400;
 
 const salt = bcrypt.genSaltSync(10);
-const generateJWT = (user) =>
-  jwt.sign({ id: user.id }, process.env.SECRET_KEY, { expiresIn: '24h' });
+const generateJWT = (user) => jwt.sign({ id: user.id }, process.env.SECRET_KEY, { expiresIn: '24h' });
 
 module.exports = {
   registrationUser(req, res) {
@@ -39,7 +38,7 @@ module.exports = {
         if (user) {
           const validPassword = bcrypt.compareSync(
             req.body.password,
-            user.password
+            user.password,
           );
           if (!validPassword) {
             res.status(BAD_REQUEST).send({ message: 'Invalid password' });
@@ -81,29 +80,12 @@ module.exports = {
         })
           .then((userDb) => {
             const token = generateJWT(userDb);
-            console.log('TOKEN =             ', token);
             done(null, token);
           })
           .catch((err) => done(err, null));
       } else {
-        Users.update(
-          {
-            avatar: profile.photos[0].value,
-            username: profile.displayName,
-          },
-          {
-            where: { email: profile.emails[0].value },
-            returning: ['id'],
-            plain: true,
-          }
-        )
-          .then((userDb) => {
-            console.log(userDb);
-            const token = generateJWT(userDb[1]);
-            console.log('TOKEN =             ', token);
-            done(null, token);
-          })
-          .catch((err) => done(err, null));
+        const token = generateJWT(user);
+        done(null, token);
       }
     });
   },
