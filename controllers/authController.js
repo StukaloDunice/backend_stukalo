@@ -13,7 +13,10 @@ module.exports = {
   registrationUser(req, res) {
     Users.findOrCreate({
       where: { email: req.body.email },
-      defaults: { username: req.body.username, password: bcrypt.hashSync(req.body.password, salt) },
+      defaults: {
+        username: req.body.username,
+        password: bcrypt.hashSync(req.body.password, salt),
+      },
     })
       .then(([user, created]) => {
         if (!created) {
@@ -22,7 +25,8 @@ module.exports = {
           const token = generateJWT(user.dataValues);
           res.status(OK).send(token);
         }
-      }).catch((error) => {
+      })
+      .catch((error) => {
         res.status(BAD_REQUEST).send(error.message);
       });
   },
@@ -32,7 +36,10 @@ module.exports = {
     })
       .then((user) => {
         if (user) {
-          const validPassword = bcrypt.compareSync(req.body.password, user.password);
+          const validPassword = bcrypt.compareSync(
+            req.body.password,
+            user.password,
+          );
           if (!validPassword) {
             res.status(BAD_REQUEST).send({ message: 'Invalid password' });
           } else {
@@ -60,5 +67,28 @@ module.exports = {
       .catch((error) => {
         res.status(BAD_REQUEST).send(error.message);
       });
+  },
+  googleAuthorization(accessToken, refreshToken, profile, done) {
+    const { emails, photos, displayName } = profile;
+    const email = emails[0].value;
+    Users.findOne({
+      where: { email },
+    }).then((user) => {
+      if (!user) {
+        Users.create({
+          email,
+          avatar: photos[0].value,
+          username: displayName,
+        })
+          .then((userDb) => {
+            const token = generateJWT(userDb);
+            done(null, token);
+          })
+          .catch((err) => done(err, null));
+      } else {
+        const token = generateJWT(user);
+        done(null, token);
+      }
+    });
   },
 };

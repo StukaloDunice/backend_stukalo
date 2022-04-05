@@ -1,5 +1,10 @@
 const express = require('express');
-const { registrationUser, authenticationUser, whoIAm } = require('../controllers/authController');
+const passport = require('passport');
+const {
+  registrationUser,
+  authenticationUser,
+  whoIAm,
+} = require('../controllers/authController');
 const jwtVerification = require('../middleware/jwtVerification');
 
 const router = express.Router();
@@ -8,5 +13,23 @@ const router = express.Router();
 router.post('/register', registrationUser);
 router.post('/login', authenticationUser);
 router.get('/whoiam', jwtVerification, whoIAm);
+
+router.get(
+  '/google',
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    session: false,
+  }),
+);
+router.get(
+  '/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: '/',
+    session: false,
+  }),
+  (req, res) => {
+    res.redirect(`${process.env.URL_CLIENT}${req.user}`);
+  },
+);
 
 module.exports = router;
