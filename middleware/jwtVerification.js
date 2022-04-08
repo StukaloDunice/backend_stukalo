@@ -8,7 +8,7 @@ const jwtVerification = (req, res, next) => {
     req.id = id;
     next();
   } catch (error) {
-    res.status(BAD_REQUEST).send({ message: 'Log in again' });
+    res.status(BAD_REQUEST).send({ message: 'You are not authorized' });
   }
 };
 

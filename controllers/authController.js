@@ -46,6 +46,8 @@ module.exports = {
             const token = generateJWT(user);
             res.status(OK).send(token);
           }
+        } else {
+          res.status(BAD_REQUEST).send({ message: 'User is not found' });
         }
       })
       .catch((error) => {
@@ -65,7 +67,7 @@ module.exports = {
         });
       })
       .catch((error) => {
-        res.status(BAD_REQUEST).send(error.message);
+        res.status(BAD_REQUEST).send({ message: 'You are not authorized' });
       });
   },
   googleAuthorization(accessToken, refreshToken, profile, done) {
