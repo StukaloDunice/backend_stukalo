@@ -6,6 +6,8 @@ const logger = require('morgan');
 const cors = require('cors');
 const passport = require('passport');
 require('./config/passport');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger');
 
 const usersRouter = require('./routes/users');
 const newsRouter = require('./routes/news');
@@ -28,6 +30,7 @@ app.use(express.static(path.join(__dirname)));
 
 app.use(passport.initialize());
 app.use(cors());
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/users', usersRouter);
 app.use('/news', newsRouter);
 app.use('/auth', authRouter);

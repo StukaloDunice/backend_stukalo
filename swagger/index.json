@@ -1,0 +1,227 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "News API",
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "tags": [
+    {
+      "name": "News site Api",
+      "descriptions": "Api functions of our application"
+    }
+  ],
+  "paths": {
+    "/news": {
+      "get": {
+        "summary": "return all news",
+        "tags": [
+          "News site Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Sample",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number",
+                        "description": "News id"
+                      },
+                      "title": {
+                        "type": "string",
+                        "description": "Title news"
+                      },
+                      "content": {
+                        "type": "string",
+                        "description": "Content news"
+                      },
+                      "tags": {
+                        "type": "string",
+                        "description": "Tags news"
+                      },
+                      "image": {
+                        "type": "string",
+                        "description": "Image news"
+                      },
+                      "userId": {
+                        "type": "number",
+                        "description": "User id"
+                      },
+                      "user": {
+                        "type": "object",
+                        "description": "The user who owns the news",
+                        "properties": {
+                          "username": {
+                            "type": "string",
+                            "description": "User name"
+                          },
+                          "avatar": {
+                            "type": "string",
+                            "description": "User avatar"
+                          },
+                          "id": {
+                            "type": "number",
+                            "description": "User id, matches the field userId"
+                          },
+                          "email": {
+                            "type": "string",
+                            "description": "User email"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request response",
+            "content": {           
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "return one user for user page",
+        "tags": [
+          "News site Api"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "simple parametr",
+            "schema": {
+              "type": "string",
+              "example": "1"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Sample",
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "description": "User name"
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "description": "User avatar"
+                    },
+                    "id": {
+                      "type": "number",
+                      "description": "User id, matches the field userId"
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "User email"
+                    },
+                    "news": {
+                      "type": "array",
+                      "description": "News for personal user",
+                      "items": {
+                        "type": "object",
+                        "description": "One news for personal user",
+                        "properties": {
+                          "id": {
+                            "type": "number",
+                            "description": "News id"
+                          },
+                          "title": {
+                            "type": "string",
+                            "description": "Title news"
+                          },
+                          "content": {
+                            "type": "string",
+                            "description": "Content news"
+                          },
+                          "tags": {
+                            "type": "string",
+                            "description": "Tags news"
+                          },
+                          "image": {
+                            "type": "string",
+                            "description": "Image news"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/users": {
+      "post": {
+        "summary": "return token by registration",
+        "tags": [
+          "News site Api"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "Sample",
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "Email user"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Password user"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "Username user"
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "Value type form from frontend, not use in API"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Registration successful",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "description": "token"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
