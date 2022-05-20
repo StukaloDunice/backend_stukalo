@@ -7,6 +7,15 @@ const router = express.Router();
 
 /* GET users listing. */
 router.get('/', getNews);
+ // описание роута
+ // #swagger.description = 'Get all news'
+ // возвращаемый ответ
+ /* #swagger.responses[200] = {
+     // описание ответа
+     description: 'Array of all news',
+     // схема ответа - ссылка на модель
+     schema: { $ref: '#/definitions/News' }
+ } */
 router.post('/', jwtVerification, uploadingPhotoMiddleware.single('image'), addNews);
 
 module.exports = router;
