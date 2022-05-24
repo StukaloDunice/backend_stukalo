@@ -91,6 +91,99 @@
             }
           }
         }
+      },
+      "post": {
+        "summary": "return created news",
+        "tags": [
+          "News site Api"
+        ],
+        "consumens": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type":"string",
+              "example": "token"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "image",
+            "type": "file",
+            "required": true,
+            "description": "Image news"
+          },
+          {
+            "in": "formData",
+            "name": "title",
+            "type": "string",
+            "required": true,
+            "description": "Title news"
+          },
+          {
+            "in": "formData",
+            "name": "content",
+            "type": "string",
+            "required": true,
+            "description": "Content news"
+          },
+          {
+            "in": "formData",
+            "name": "tags",
+            "type": "string",
+            "required": true,
+            "description": "Tags news"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Sample",
+                  "type": "object",
+                  "properties": {
+                    "content": {
+                      "type": "string",
+                      "description": "Content created news"
+                    },
+                    "createdAt":{
+                      "type": "string",
+                      "description": "Date created news"
+                    },
+                    "id": {
+                      "type": "number",
+                      "description": "Id news"
+                    },
+                    "image": {
+                      "type": "string",
+                      "description": "Image created news"
+                    },
+                    "tags": {
+                      "type": "string",
+                      "description": "Tags created news"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "Title created news"
+                    },
+                    "updatedAt":{
+                      "type": "string",
+                      "description": "Date updated news"
+                    },
+                    "userId": {
+                      "type": "number",
+                      "description": "Id user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/users/{id}": {
@@ -172,9 +265,79 @@
             }
           }
         }
+      },
+      "patch": {
+        "summary": "return updated user",
+        "tags": [
+          "News site Api"
+        ],
+        "consumens": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type":"string",
+              "example": "token"
+            }
+          },
+          {
+            "in": "formData",
+            "name": "avatar",
+            "type": "file",
+            "required": true,
+            "description": "Avatar user"
+          },
+          {
+            "in": "formData",
+            "name": "username",
+            "type": "string",
+            "required": true,
+            "description": "Username user"
+          },
+          {
+            "in": "formData",
+            "name": "id",
+            "type": "number",
+            "required": true,
+            "description": "Id user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Sample",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "description": "Id updated user"
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "description": "Avatar updated user"
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "Email updated user"
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "Username updated user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
-    "/auth/users": {
+    "/auth/register": {
       "post": {
         "summary": "return token by registration",
         "tags": [
@@ -214,7 +377,127 @@
             "content": {
               "text/html": {
                 "schema": {
-                  "description": "token"
+                  "type":"string",
+                  "example": "token"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "return token by login",
+        "tags": [
+          "News site Api"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "Sample",
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "Email user"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "Password user"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "Username user, not use in API for this route"
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "Value type form from frontend, not use in API for this route"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type":"string",
+                  "example": "token"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/whoiam": {
+      "get": {
+        "summary": "get user by token",
+        "tags": [
+          "News site Api"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "schema": {
+              "type":"string",
+              "example": "token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get user successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "Sample",
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "description": "Email user"
+                    },
+                    "avatar": {
+                      "type": "string",
+                      "description": "Avatar user"
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "Username user"
+                    },
+                    "id": {
+                      "type": "number",
+                      "description": "id user in db"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/google": {
+      "get": {
+        "summary": "get a token after google login",
+        "tags": [
+          "News site Api"
+        ],
+        "responses": {
+          "200": {
+            "description": "Google login successful",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type":"string",
+                  "example": "token"
                 }
               }
             }
