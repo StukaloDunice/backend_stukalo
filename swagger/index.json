@@ -86,9 +86,7 @@
             }
           },
           "400": {
-            "description": "Bad request response",
-            "content": {           
-            }
+            "description": "Bad request response, error sequelize"
           }
         }
       },
@@ -182,6 +180,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Bad request response, error sequelize"
           }
         }
       }
@@ -263,6 +264,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "You are not authorized"
           }
         }
       },
@@ -333,6 +337,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "You are not authorized"
           }
         }
       }
@@ -431,6 +438,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid password"
           }
         }
       }
@@ -480,6 +490,9 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "You are not authorized"
           }
         }
       }
