@@ -95,9 +95,6 @@
         "tags": [
           "News site Api"
         ],
-        "consumens": [
-          "multipart/form-data"
-        ],
         "parameters": [
           {
             "in": "header",
@@ -106,36 +103,32 @@
               "type":"string",
               "example": "token"
             }
-          },
-          {
-            "in": "formData",
-            "name": "image",
-            "type": "file",
-            "required": true,
-            "description": "Image news"
-          },
-          {
-            "in": "formData",
-            "name": "title",
-            "type": "string",
-            "required": true,
-            "description": "Title news"
-          },
-          {
-            "in": "formData",
-            "name": "content",
-            "type": "string",
-            "required": true,
-            "description": "Content news"
-          },
-          {
-            "in": "formData",
-            "name": "tags",
-            "type": "string",
-            "required": true,
-            "description": "Tags news"
           }
         ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "content": {
+                    "type": "string"
+                  },
+                  "tags": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "content": {
@@ -275,9 +268,6 @@
         "tags": [
           "News site Api"
         ],
-        "consumens": [
-          "multipart/form-data"
-        ],
         "parameters": [
           {
             "in": "header",
@@ -286,29 +276,35 @@
               "type":"string",
               "example": "token"
             }
-          },
-          {
-            "in": "formData",
-            "name": "avatar",
-            "type": "file",
-            "required": true,
-            "description": "Avatar user"
-          },
-          {
-            "in": "formData",
-            "name": "username",
-            "type": "string",
-            "required": true,
-            "description": "Username user"
-          },
-          {
-            "in": "formData",
-            "name": "id",
-            "type": "number",
-            "required": true,
-            "description": "Id user"
           }
         ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "avatar": {
+                    "type": "string",
+                    "format": "binary",
+                    "required": true,
+                    "description": "Avatar user"
+                  },
+                  "username": {
+                    "type": "string",
+                    "required": true,
+                    "description": "Username user"
+                  },
+                  "id": {
+                    "type": "number",
+                    "required": true,
+                    "description": "Id user"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "content": {
