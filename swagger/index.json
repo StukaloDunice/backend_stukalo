@@ -9,6 +9,15 @@
       "url": "http://localhost:3000"
     }
   ],
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
+      }
+    }
+  },
   "tags": [
     {
       "name": "News site Api",
@@ -95,16 +104,9 @@
         "tags": [
           "News site Api"
         ],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "schema": {
-              "type":"string",
-              "example": "token"
-            }
-          }
-        ],
+        "security": [{
+          "ApiKeyAuth": []
+        }],
         "requestBody": {
           "content": {
             "multipart/form-data": {
@@ -268,16 +270,9 @@
         "tags": [
           "News site Api"
         ],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Authorization",
-            "schema": {
-              "type":"string",
-              "example": "token"
-            }
-          }
-        ],
+        "security": [{
+          "ApiKeyAuth": []
+        }],
         "requestBody": {
           "content": {
             "multipart/form-data": {
